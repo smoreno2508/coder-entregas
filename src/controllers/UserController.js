@@ -1,0 +1,37 @@
+import { userService } from "../services/index.js";
+import { successResponse } from "../helpers/responseMaker.js";
+
+const getAllUsers = async (req, res, next) => {
+    try {
+        const users = await userService.findAll();
+        successResponse(res, 'Users fetched successfully', users);
+    } catch (err) {
+        next(err);
+    }
+}
+
+const createUser = async(req, res, next) => {
+    try {
+        const user = await userService.create(req.body);
+        successResponse(res, 'User created successfully', user);
+    } catch (err) {
+        next(err);
+    }
+}
+
+const getUserById = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const user = await userService.findById(id);
+        successResponse(res, 'User fetched successfully', user);
+    } catch (err) {
+        next(err);
+    }
+}
+
+
+export {
+    getAllUsers,
+    createUser,
+    getUserById
+}
