@@ -1,3 +1,4 @@
+import { validateObjectId } from "../helpers/utils.js"; 
 export default class BaseRepository {
     
     constructor(model) {
@@ -13,14 +14,17 @@ export default class BaseRepository {
     }
 
     async findById(id) {
+        await validateObjectId(id);
         return await this.model.findById(id);
     }
 
     async update(id, data) {
+        validateObjectId(id);
         return await this.model.findByIdAndUpdate(id, data, { new: true});
     }
 
     async delete(id){
+        validateObjectId(id);
         return await this.model.findByIdAndDelete(id);
     }
 

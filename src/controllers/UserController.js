@@ -19,6 +19,16 @@ const createUser = async(req, res, next) => {
     }
 }
 
+const updateUser = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const user = await userService.update(id, req.body);
+        successResponse(res, 'User updated successfully', user);
+    } catch (err) {
+        next(err);
+    }
+}
+
 const getUserById = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -29,9 +39,9 @@ const getUserById = async (req, res, next) => {
     }
 }
 
-
 export {
     getAllUsers,
     createUser,
-    getUserById
+    getUserById,
+    updateUser
 }

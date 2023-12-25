@@ -38,14 +38,18 @@ export default class UserService {
     }
 
     async update(id, user) {
-        return await this.userRepository.update(id, user);
+        const userUpdate = await this.userRepository.update(id, user);
+        if(!userUpdate) throw new NotFoundError("User not found.");
+        return userUpdate;
     }
 
     async delete(id) {
         return await this.userRepository.delete(id);
     }
 
+
     //metodos auxiliares
+
     async userExist(email) {
         const userExist = await this.userRepository.findByEmail(email);
         if (userExist) throw new ConflictError(`User with email ${email} already exists!`);

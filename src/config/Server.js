@@ -30,7 +30,9 @@ export default class Server {
     }
 
     middlewares(){
-        this.app.use(cors());
+        this.app.use(cors({
+            credentials: true,
+        }));
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended:true}));
         this.app.use(express.static(__dirname + '/public'));
@@ -42,13 +44,16 @@ export default class Server {
             cookie: { maxAge: 120000 },
             resave: false,
             saveUninitialized: false,
-        }));
-        this.app.use(passport.session());
-    
+        }));    
     }
 
     handlebars(){
         this.app.engine('hbs', engine({ 
+            helpers: {
+                eq: (v1, v2) => v1 == v2 ,
+                multiply: (v1, v2) => v1 * v2,
+                calculateTotal: (products) => products.reduce((acc, product) => acc + (product.product.price * product.quantity), 0)
+            },
             extname: 'hbs',
             partialsDir: __dirname + '/views/partials'
         }));

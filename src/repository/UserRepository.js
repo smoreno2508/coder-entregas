@@ -2,6 +2,7 @@
 import BaseRepository from "./BaseRepository.js";
 
 export default class UserRepository extends BaseRepository {
+    
     constructor(model) {
         super(model)
     }
@@ -12,5 +13,9 @@ export default class UserRepository extends BaseRepository {
 
     async getRole(id){
         return await this.model.findById(id, 'role');
+    }
+
+    async getUserByCart(cartId){
+        return await this.model.findOne({ cartId });
     }
 }
