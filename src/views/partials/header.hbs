@@ -1,6 +1,6 @@
 <nav class="navbar navbar-dark bg-dark p-3">
   <div class="d-flex col-12 col-md-3 col-lg-2 mb-2 mb-lg-0 flex-wrap flex-md-nowrap justify-content-between">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="/">
       <img src="../img/ecoder-logo.png" alt="" width="80" height="70" class="d-inline-block align-text-top">
     </a>
 
@@ -9,9 +9,24 @@
       <span class="navbar-toggler-icon"></span>
     </button>
   </div>
+
+  {{#if user}}
+
+  {{#if (eq user.role "CLIENT")}}
+  <div>
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" href="/cart/{{user.cartId}}">
+          <span class="fas fa-shopping-cart" style="font-size:25px"></span>
+          <span class="badge badge-pill badge-light align-text-bottom" id="cart-count">{{cartItemCount}}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  {{/if}}
   <div class="col-12 col-md-5 col-lg-8 d-flex align-items-center justify-content-md-end mt-3 mt-md-0">
-    
-    {{#if user}}
+
+
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
         aria-expanded="false">

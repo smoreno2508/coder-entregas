@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const ticketSchema = new Schema({
     code: {
@@ -14,8 +14,8 @@ const ticketSchema = new Schema({
         required:true,
     },
     purchaser:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'users',
+        type:String,
+        required:true,
     },
 });
 

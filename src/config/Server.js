@@ -1,5 +1,6 @@
 import  express from "express";
 import cors from "cors";
+import { Server as SocketIOServer } from 'socket.io';
 import { engine } from 'express-handlebars';
 import { config } from "dotenv";
 import passport from "../middleware/Passport.js";
@@ -10,13 +11,17 @@ import dbConnection from "../config/Database.js";
 import { __dirname } from "../helpers/utils.js";
 import mainRouter from "../routes/index.js";
 import errorHandler from "../middleware/error/ErrorHandleMiddleware.js";
+import SocketManager from "../sockets/SocketManager.js";
 
 config();
 
 export default class Server {
     
-    constructor(){
+    constructor(productService, messageService, cartService){
         this.app = express();
+        this.productService = productService;
+        this.messageService = messageService;
+        this.cartService = cartService;
         this.PORT = process.env.PORT;
         this.connetDB();
         this.middlewares();
@@ -44,7 +49,8 @@ export default class Server {
             cookie: { maxAge: 120000 },
             resave: false,
             saveUninitialized: false,
-        }));    
+        }));
+        this.app.use(passport.session());
     }
 
     handlebars(){
@@ -73,6 +79,9 @@ export default class Server {
         this.httpServer = this.app.listen(this.PORT, () => {
             console.log(`Server running on port ${this.PORT}`);
         });
+
+        this.io = new SocketIOServer(this.httpServer);
+        new SocketManager(this.io, this.productService, this.messageService, this.cartService);
     }
 
 

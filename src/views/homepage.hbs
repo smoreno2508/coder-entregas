@@ -8,7 +8,6 @@
 
             </section>
         </div>
-
         {{!-- Products --}}
         <div class="col-lg-9">
             <section class="section-products">
@@ -21,7 +20,7 @@
                                 <div class="part-1">
                                     <img src="{{ thumbnail }}" alt="" class="product-image">
                                     <ul>
-                                        <li><a href="#" onclick="addProductToCart('{{_id}}')"><i
+                                        <li><a href="#" onclick="addProductToCart('{{_id}}', '{{../user.cartId}}')"><i
                                                     class="fas fa-shopping-cart"></i></a></li>
                                         <li><a href="#"><i class="fas fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fas fa-plus"></i></a></li>
@@ -88,7 +87,8 @@
     </div>
     <!-- Formulario de entrada de correo electrónico -->
     <div class="email-entry p-3">
-        <input type="email" id="email" placeholder="Introduce tu correo" class="form-control mb-2">
+        <input type="email" id="email" placeholder="Introduce tu correo" class="form-control mb-2"
+            value="{{user.email}}" disabled>
         <button id="startChat" class="btn btn-primary w-100">Iniciar Chat</button>
     </div>
     <!-- Contenedor de mensajes (oculto por defecto) -->

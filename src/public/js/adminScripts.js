@@ -32,7 +32,6 @@ function mostrarFormularioActualizarProducto(idProducto) {
     fetch(`/api/product/${idProducto}`)
         .then(response => response.json())
         .then(producto => {
-            console.log(producto.data);
             Swal.fire({
                 title: 'Actualizar Producto',
                 html:
@@ -87,7 +86,6 @@ function mostrarFormularioActualizarProducto(idProducto) {
 }
 
 function actualizarProducto(id, data) {
-    console.log(data);
     fetch(`/api/product/${id}`, {
         method: 'PUT',
         headers: {

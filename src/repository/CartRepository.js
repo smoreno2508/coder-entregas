@@ -5,6 +5,11 @@ export default class CartRepository extends BaseRepository {
         super(model)
     }
 
+
+    async getCartById(id) {
+        return await this.model.findById(id).populate("products.product");
+    }
+
     async createCart() {
         const cartData = { products: [] };
         return await this.create(cartData);
@@ -21,5 +26,11 @@ export default class CartRepository extends BaseRepository {
         }
 
         return cart.save();   
+    }
+
+    async clearCart(cartId) {
+        const cart = await this.model.findById(cartId);
+        cart.products = [];
+        return cart.save();
     }
 }
