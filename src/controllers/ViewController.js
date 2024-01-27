@@ -2,6 +2,7 @@ import { userService, productService, cartService, ticketService } from "../serv
 import { v4 as uuidv4 } from 'uuid';
 
 const formatUserList = (users) => users.map(user => user.toObject());
+const formatTicketList = (tickets) => tickets.map(ticket => ticket.toObject());
 
 const paginate = (items) => ({
     ...items,
@@ -45,9 +46,9 @@ const renderHomePage = async (req, res, next) => {
 
 const renderDashBoardAdmin = async (req, res, next) => {
 
-    const userList = await userService.findAll();
+    const ticketList = await ticketService.findLastFiveTickets();
     res.render('admin/dashboard', {
-        userList: formatUserList(userList),
+        ticketList: formatTicketList(ticketList),
         user: req.user
     });
 }

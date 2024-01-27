@@ -46,7 +46,7 @@ const getProducts = async (req, res, next) => {
             query: otherQuery 
         });
 
-        successResponse(res, 'Products fetched successfully', products);
+        successResponse(res, 'Products fetched successfully', {products});
     } catch (err) {
         next(err);
     }

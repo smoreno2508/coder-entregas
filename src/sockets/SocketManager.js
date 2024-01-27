@@ -14,15 +14,10 @@ export default class SocketManager {
     initializeSockets(io){
 
         io.on("connection", async (socket) => {
-            console.log(`Client connected with ID: ${socket.id}`);
-
+        
             await this.productSocket.registerEvents(socket);
             await this.messageSocket.registerEvents(socket);
             await this.cartSocket.registerEvents(socket);
-
-            socket.on("disconnect", () => {
-                console.log(`Client disconnected with ID: ${socket.id}`);
-            });
 
         }); 
     }

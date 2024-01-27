@@ -12,7 +12,10 @@ import { __dirname } from "../helpers/utils.js";
 import mainRouter from "../routes/index.js";
 import errorHandler from "../middleware/error/ErrorHandleMiddleware.js";
 import SocketManager from "../sockets/SocketManager.js";
+import { buildLogger } from "../helpers/logger.js";
+import loggerMiddleware from "../middleware/loggerMiddleware.js";
 
+const logger = buildLogger("Server");
 config();
 
 export default class Server {
@@ -41,6 +44,7 @@ export default class Server {
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended:true}));
         this.app.use(express.static(__dirname + '/public'));
+        this.app.use(loggerMiddleware);
         this.app.use(cookieParser(process.env.COOKIE_SECRET));
         this.app.use(passport.initialize());
         this.app.use(session({
@@ -58,7 +62,8 @@ export default class Server {
             helpers: {
                 eq: (v1, v2) => v1 == v2 ,
                 multiply: (v1, v2) => v1 * v2,
-                calculateTotal: (products) => products.reduce((acc, product) => acc + (product.product.price * product.quantity), 0)
+                calculateTotal: (products) => products.reduce((acc, product) => acc + (product.product.price * product.quantity), 0),
+                formatDate: (date, locale = 'es-CL') => new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'medium' }).format(new Date(date))
             },
             extname: 'hbs',
             partialsDir: __dirname + '/views/partials'
@@ -77,7 +82,7 @@ export default class Server {
 
     start(){
         this.httpServer = this.app.listen(this.PORT, () => {
-            console.log(`Server running on port ${this.PORT}`);
+            logger.debug(`Server running on port ${this.PORT}`);
         });
 
         this.io = new SocketIOServer(this.httpServer);

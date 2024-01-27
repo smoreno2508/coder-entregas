@@ -14,7 +14,7 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error('Ocurrio un error intentelo mas tarde.');
         }
         return response.json();
     })

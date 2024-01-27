@@ -5,8 +5,6 @@ import * as userController from "../controllers/UserController.js";
 const router = Router();
 
 router.post("/login", authController.jwtLogin);
-
-//todo: add register route
 router.post("/register", userController.createUser);
 
 router.get("/auth/github", authController.passportGithubLogin);

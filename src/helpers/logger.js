@@ -4,6 +4,10 @@ const{ combine, timestamp, json } = format;
 
 const logLevel = process.env.LOG_LEVEL || "debug";
 
+const logFormat = winston.format.printf(({ level, message, label, timestamp }) => {
+    return `${timestamp} [${label}] ${level}: ${message}`;
+});
+
 winston.addColors({
     error: "red",
     warn: "yellow",
@@ -27,7 +31,9 @@ logger.add(new winston.transports.Console({
     level: logLevel,
     format: winston.format.combine(
         winston.format.colorize(),
-        winston.format.simple()
+        winston.format.label({ label: 'Ecommerce-coder' }),
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        logFormat
     )
 }));
 

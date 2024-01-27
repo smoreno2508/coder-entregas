@@ -32,6 +32,7 @@ const getCarts = async (req, res, next) => {
     }
 }
 
+// todo: implementar
 const removeProductFromCart = async (req, res, next) => {
 
 }

@@ -12,7 +12,6 @@ export default class UserService {
     async findAll() {
         const users = await this.userRepository.findAll();
         if (users.length === 0) {
-            logger.error("No users found.");
             throw new NotFoundError("No users found.");
         }
         return users;
@@ -21,7 +20,6 @@ export default class UserService {
     async findById(id) {
         const user = await this.userRepository.findById(id);
         if (!user) {
-            logger.error("User not found.");
             throw new NotFoundError("User not found.");
         }
         return user;
@@ -59,7 +57,6 @@ export default class UserService {
     async userExist(email) {
         const userExist = await this.userRepository.findByEmail(email);
         if (userExist) {
-            logger.warn(`User with email ${email} already exists!`);
             throw new ConflictError(`User with email ${email} already exists!`);
         }
     }
