@@ -10,7 +10,7 @@ const router = Router();
 
 router.use('/', viewsRouter);
 router.use('/', userRouter )
-router.use('/', authRouter);
+router.use('/api/', authRouter);
 router.use('/', cartRouter);
 router.use('/', productRouter);
 router.use('/', ticketRouter);

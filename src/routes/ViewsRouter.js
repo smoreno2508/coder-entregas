@@ -8,6 +8,9 @@ const router = Router();
 
 router.get('/login', redirectIfAuthenticated, viewsController.login);
 router.get('/logout', viewsController.logout);
+router.get("/register", async (req, res) => {
+    res.render("auth/register");
+});
 router.get('/', isAuthenticated, viewsController.renderHomePage);
 router.get('/chat', isAuthenticated, authorizeRole("CLIENT"), viewsController.renderChat);
 router.get('/admin/dashboard', isAuthenticated, authorizeRole("ADMIN"), viewsController.renderDashBoardAdmin);

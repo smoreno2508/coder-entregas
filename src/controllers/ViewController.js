@@ -38,8 +38,6 @@ const renderHomePage = async (req, res, next) => {
             cartItemCount: totalItemCount || 0,
             user: req.user
         });
-    } else {
-        res.redirect('/login');
     }
 
 }

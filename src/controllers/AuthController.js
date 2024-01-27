@@ -16,4 +16,26 @@ const jwtLogin = (req, res, next) => {
     })(req, res, next);
 };
 
-export { jwtLogin };
+const passportGithubLogin = passport.authenticate("github", { scope: ["user:email"] });
+const passportGithubCallback = (req, res, next) => {
+    passport.authenticate("github", async (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect("/login");
+        }
+
+        const jwtToken = await generateJWT(user);
+        res.cookie('token', jwtToken.token, { httpOnly: true, secure: true });
+
+        res.redirect('/');
+    })(req, res, next);
+};
+
+
+export { 
+    jwtLogin,
+    passportGithubLogin,
+    passportGithubCallback
+ };

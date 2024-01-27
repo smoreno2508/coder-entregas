@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import { buildLogger } from "../helpers/logger.js";
+
+const logger = buildLogger("Database");
 
 const dbConnection = async () => {
    
@@ -7,8 +10,8 @@ const dbConnection = async () => {
     if (!mongoURL) throw new Error('MongoDB connection URL is not defined in environment variables.');
     
     mongoose.connect(mongoURL)
-    .then(() => console.log('Database online.'))
-    .catch((error) => console.error('Error connecting to MongoDB:', error.message));
+    .then(() => logger.debug('Database online.'))
+    .catch((error) => logger.error('Error connecting to MongoDB:', error.message));
     
 };
 

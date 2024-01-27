@@ -1,5 +1,7 @@
 import { NotFoundError, ConflictError } from "../errors/customErrors.js";
+import { buildLogger } from "../helpers/logger.js";
 
+const logger = buildLogger("UserService");
 export default class UserService {
 
     constructor(userRepository, cartRepository) {
@@ -9,20 +11,24 @@ export default class UserService {
 
     async findAll() {
         const users = await this.userRepository.findAll();
-        if (users.length === 0) throw new NotFoundError("No users found.");
+        if (users.length === 0) {
+            logger.error("No users found.");
+            throw new NotFoundError("No users found.");
+        }
         return users;
     }
 
     async findById(id) {
         const user = await this.userRepository.findById(id);
-        if (!user) throw new NotFoundError("User not found.");
+        if (!user) {
+            logger.error("User not found.");
+            throw new NotFoundError("User not found.");
+        }
         return user;
     }
 
     async findByEmail(email) {
-        const user = await this.userRepository.findByEmail(email);
-        if (!user) throw new NotFoundError(`User with email ${email} not found!`);
-        return user;
+        return await this.userRepository.findByEmail(email);
     }
 
     async create(user) {
@@ -39,7 +45,7 @@ export default class UserService {
 
     async update(id, user) {
         const userUpdate = await this.userRepository.update(id, user);
-        if(!userUpdate) throw new NotFoundError("User not found.");
+        if (!userUpdate) throw new NotFoundError("User not found.");
         return userUpdate;
     }
 
@@ -52,6 +58,9 @@ export default class UserService {
 
     async userExist(email) {
         const userExist = await this.userRepository.findByEmail(email);
-        if (userExist) throw new ConflictError(`User with email ${email} already exists!`);
+        if (userExist) {
+            logger.warn(`User with email ${email} already exists!`);
+            throw new ConflictError(`User with email ${email} already exists!`);
+        }
     }
 }
