@@ -1,5 +1,7 @@
 import { NotFoundError, ConflictError } from "../errors/customErrors.js";
 import { buildLogger } from "../helpers/logger.js";
+import bcrypt from 'bcrypt';
+
 
 const logger = buildLogger("UserService");
 export default class UserService {
@@ -60,4 +62,13 @@ export default class UserService {
             throw new ConflictError(`User with email ${email} already exists!`);
         }
     }
+
+    async requestPasswordReset(email) {
+        return await this.userRepository.createPasswordResetToken(email);
+    }
+
+    async resetUserPassword(token, newPassword) {
+        return await this.userRepository.resetPassword(token, newPassword);
+    }
+    
 }

@@ -171,6 +171,16 @@ const logout = async (req, res, next) => {
     }
 };
 
+const resetPasswordRender = async (req, res, next) => {
+    try {
+        const { token } = req.query;
+        res.render('auth/resetPassword', {token});
+    } catch (err) {
+        next(err);
+    }
+
+}
+
 export {
     renderHomePage,
     renderDashBoardAdmin,
@@ -182,5 +192,6 @@ export {
     orderComplete,
     login,
     logout,
-    renderChat
+    renderChat,
+    resetPasswordRender
 }

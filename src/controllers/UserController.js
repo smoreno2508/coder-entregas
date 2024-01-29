@@ -39,9 +39,22 @@ const getUserById = async (req, res, next) => {
     }
 }
 
+const resetPassword = async (req, res, next) => {
+    try {
+        const { token, newPassword } = req.body;
+
+        await userService.resetUserPassword(token, newPassword);
+        successResponse(res, 'Password reset successfully');
+    } catch (err) {
+        next(err);
+    }
+}
+
+
 export {
     getAllUsers,
     createUser,
     getUserById,
-    updateUser
+    updateUser,
+    resetPassword
 }

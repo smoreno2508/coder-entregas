@@ -25,13 +25,21 @@ const usersSchema = new Schema({
     role: {
         type:String,
         required:true,
-        enum:['ADMIN','CLIENT'],
+        enum:['ADMIN','CLIENT','PREMIUM'],
         default:'CLIENT',
     },
     isGithub: {
         type:Boolean,
         default:false,
     },
+    resetPasswordToken: {
+        type:String,
+        default:null,
+    },
+    resetPasswordExpires: {
+        type:Date,
+        default:null,
+    }
 });
 
 usersSchema.pre('save', async function(next){
@@ -47,6 +55,17 @@ usersSchema.methods.isValidPassword = async function(password){
     const compare = await bcrypt.compare(password, user.password);
     return compare;
 }
+
+
+usersSchema.methods.generatePasswordReset = function() {
+    this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
+    this.resetPasswordExpires = Date.now() + 3600000; 
+};
+
+usersSchema.methods.clearPasswordReset = function() {
+    this.resetPasswordToken = null;
+    this.resetPasswordExpires = null;
+};
 
 
 export const UserModel = model('user', usersSchema);

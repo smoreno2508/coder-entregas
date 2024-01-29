@@ -11,6 +11,12 @@ router.get('/logout', viewsController.logout);
 router.get("/register", async (req, res) => {
     res.render("auth/register");
 });
+
+router.get("/reset", async (req, res) =>{
+    res.render("auth/requestResetPassword");
+})
+
+router.get('/api/auth/reset-password', viewsController.resetPasswordRender);
 router.get('/', isAuthenticated, viewsController.renderHomePage);
 router.get('/chat', isAuthenticated, authorizeRole("CLIENT"), viewsController.renderChat);
 router.get('/admin/dashboard', isAuthenticated, authorizeRole("ADMIN"), viewsController.renderDashBoardAdmin);

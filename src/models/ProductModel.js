@@ -34,7 +34,11 @@ const productSchema = new Schema({
     stock: {
         type:Number,
         required:true,
-    }
+    },
+    owner: {
+        type:Schema.Types.ObjectId,
+        ref:'users'
+    },
 });
 
 

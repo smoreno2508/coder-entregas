@@ -44,7 +44,6 @@ export default class Server {
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended:true}));
         this.app.use(express.static(__dirname + '/public'));
-        this.app.use(loggerMiddleware);
         this.app.use(cookieParser(process.env.COOKIE_SECRET));
         this.app.use(passport.initialize());
         this.app.use(session({
@@ -55,6 +54,7 @@ export default class Server {
             saveUninitialized: false,
         }));
         this.app.use(passport.session());
+        this.app.use(loggerMiddleware);
     }
 
     handlebars(){
