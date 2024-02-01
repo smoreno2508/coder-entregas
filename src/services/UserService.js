@@ -1,6 +1,6 @@
 import { NotFoundError, ConflictError } from "../errors/customErrors.js";
 import { buildLogger } from "../helpers/logger.js";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 
 const logger = buildLogger("UserService");
@@ -40,6 +40,12 @@ export default class UserService {
             user.cartId = createdCart._id;
         }
 
+        const { password } = user;
+
+        const hash = await bcrypt.hash(password, 10);
+
+        user.password = hash;
+
         return await this.userRepository.create(user);
     }
 
@@ -68,7 +74,19 @@ export default class UserService {
     }
 
     async resetUserPassword(token, newPassword) {
-        return await this.userRepository.resetPassword(token, newPassword);
+
+        const user = await this.userRepository.getUserByTempToken(token);
+
+        if (!user) throw new NotFoundError('el token no es valido o usuario no encontrado.');
+
+
+        const match = await bcrypt.compare(newPassword, user.password);
+
+        if (match) throw new ConflictError('la contraseña no puede ser igual a la anterior');
+
+        const hash = await bcrypt.hash(newPassword, 10);
+
+        return await this.userRepository.resetPassword(token, hash);
     }
-    
+
 }
