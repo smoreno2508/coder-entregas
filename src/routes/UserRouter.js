@@ -10,5 +10,6 @@ router.post('/api/user', isAuthenticated, autorizeRole("ADMIN"), userController.
 router.put('/api/user/:id', isAuthenticated, autorizeRole("ADMIN"), userController.updateUser);
 router.get('/api/user/:id', isAuthenticated, autorizeRole("ADMIN","CLIENT"),userController.getUserById);
 router.post('/api/auth/reset-password', userController.resetPassword);
+router.put('/api/user/premium/:uid', isAuthenticated, autorizeRole("ADMIN"), userController.updateUserRole);
 
 export default router;

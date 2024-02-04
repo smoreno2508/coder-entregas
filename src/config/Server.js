@@ -61,6 +61,7 @@ export default class Server {
         this.app.engine('hbs', engine({ 
             helpers: {
                 eq: (v1, v2) => v1 == v2 ,
+                or: (v1, v2) => v1 || v2,
                 multiply: (v1, v2) => v1 * v2,
                 calculateTotal: (products) => products.reduce((acc, product) => acc + (product.product.price * product.quantity), 0),
                 formatDate: (date, locale = 'es-CL') => new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'medium' }).format(new Date(date))

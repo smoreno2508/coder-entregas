@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { NotFoundError, OutOfStockError } from "../errors/customErrors.js";
+import { ConflictError, NotFoundError, OutOfStockError } from "../errors/customErrors.js";
 
 
 export default class CartService {
@@ -26,12 +26,18 @@ export default class CartService {
         return carts;
     }
 
-    async addProductToCart(cartId, productId) {
+    async addProductToCart(cartId, productId, email) {
+
 
         const product = await this.producRepository.findById(productId);
 
         if (product.stock === 0) {
             throw new OutOfStockError("Product out of stock.");
+        }
+
+
+        if (product.owner === email) {
+            throw new ConflictError("You can't add your own product to the cart.");
         }
 
         const cart = await this.cartRepository.addProductToCart(cartId, productId);

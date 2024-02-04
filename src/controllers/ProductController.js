@@ -3,7 +3,8 @@ import { successResponse } from "../helpers/responseMaker.js";
 
 const createProduct = async (req, res, next) => {  
     try {
-        const product = await productService.createProduct(req.body);
+        const user = req.user; 
+        const product = await productService.createProduct(req.body, user);
         successResponse(res, 'Product created successfully', product);
     } catch (err) {
         next(err);
@@ -24,7 +25,8 @@ const updateProduct = async (req, res, next) => {
 const deleteProduct = async (req, res, next) => {
     try {
         const { id } = req.params;
-        await productService.deleteProduct(id);
+        const user = req.user;
+        await productService.deleteProduct(id, user);
         successResponse(res, 'Product deleted successfully');
     } catch (err) {
         next(err);

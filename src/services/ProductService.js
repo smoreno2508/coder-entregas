@@ -1,4 +1,4 @@
-import { ConflictError, InternalServerError, NotFoundError } from "../errors/customErrors.js";
+import { ConflictError, InternalServerError, NotFoundError, NotAuthorizedError} from "../errors/customErrors.js";
 export default class ProductService {
 
     constructor(productRepository) {
@@ -9,19 +9,17 @@ export default class ProductService {
         return await this.productRepository.productExist(code);
     }
 
-    async createProduct(product) {
+    async createProduct(product, user) {
+
+        const { code, owner } = product;
 
         if (await this.productExists(code)) {
             throw new ConflictError(`Product with the code ${code} already exists!`);
         }
 
-        const productAdded = await this.productRepository.create(product);
+        product.owner = (!owner && user.role !== 'PREMIUM') ? 'admin' : user.email;
 
-        if (!productAdded) {
-            throw new InternalServerError("Product not created.");
-        }
-
-        return productAdded;
+        return await this.productRepository.create(product);
     }
 
     async getProducts({ limit = 12, page = 1, sort = {}, query = {} } = {}) {
@@ -69,8 +67,16 @@ export default class ProductService {
         return productUpdate;
     }
 
-    async deleteProduct(id) {
+    async deleteProduct(id, user) {
+
+        const product = await this.getProductById(id);
+
+        if (user.role !== 'ADMIN' && product.owner !== user.email) {
+            throw new NotAuthorizedError("You do not have permission to delete this product.");
+        }
+
         const productDelete = await this.productRepository.delete(id);
+
         if (!productDelete) {
             throw new NotFoundError("Product not found.");
         }

@@ -35,7 +35,7 @@ export default class UserService {
 
         await this.userExist(user.email);
 
-        if (user.role !== 'ADMIN') {
+        if (user.role !== 'ADMIN' && user.role !== 'PREMIUM') {
             const createdCart = await this.cartRepository.createCart();
             user.cartId = createdCart._id;
         }
@@ -79,7 +79,6 @@ export default class UserService {
 
         if (!user) throw new NotFoundError('el token no es valido o usuario no encontrado.');
 
-
         const match = await bcrypt.compare(newPassword, user.password);
 
         if (match) throw new ConflictError('la contraseña no puede ser igual a la anterior');
@@ -87,6 +86,23 @@ export default class UserService {
         const hash = await bcrypt.hash(newPassword, 10);
 
         return await this.userRepository.resetPassword(token, hash);
+    }
+
+
+    async updateUserRole(id) {
+
+        const user = await this.userRepository.findById(id);
+
+        if (!user) throw new NotFoundError('User not found.');
+
+        if (user.role === 'ADMIN') throw new ConflictError('User is an admin and cannot be updated.');
+
+        const newRole = user.role === 'PREMIUM' ? 'CLIENT' : 'PREMIUM';
+
+        await this.userRepository.update(id, { role: newRole });
+
+        return { email: user.email, newRole }
+
     }
 
 }

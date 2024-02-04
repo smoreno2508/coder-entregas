@@ -1,7 +1,7 @@
 const socket = io();
 
-async function addProductToCart(productId, cartId) {
-    socket.emit("addProductToCart", cartId, productId);    
+async function addProductToCart(productId, cartId, email) {
+    socket.emit("addProductToCart", cartId, productId, email);    
 }
 
 socket.on('cartUpdatedNotification', (message) =>{
@@ -16,6 +16,14 @@ socket.on('cartUpdatedNotification', (message) =>{
     Toast.fire({
         icon: 'success',
         title: message
+    });
+});
+
+socket.on('cartError', (message) =>{
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: message,
     });
 });
 

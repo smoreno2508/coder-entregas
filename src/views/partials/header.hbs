@@ -12,7 +12,7 @@
 
   {{#if user}}
 
-  {{#if (eq user.role "CLIENT")}}
+  {{#if (or (eq user.role "CLIENT") (eq user.role "PREMIUM"))}}
   <div>
     <ul class="navbar-nav px-3">
       <li class="nav-item text-nowrap">
@@ -34,7 +34,7 @@
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <li><a class="dropdown-item" href="#">Settings</a></li>
-        {{#if (eq user.role "CLIENT")}}
+        {{#if (or (eq user.role "CLIENT") (eq user.role "PREMIUM"))}}
         <li><a class="dropdown-item" href="/chat">Messages</a></li>
         {{/if}}
         <li><a class="dropdown-item" href="/logout">Sign out</a></li>

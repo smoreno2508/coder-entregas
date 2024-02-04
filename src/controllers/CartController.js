@@ -14,7 +14,8 @@ const getCartByID = async (req, res, next) => {
 const addProductToCart = async (req, res, next) => {
     try {
         const { cid, pid } = req.params;
-        const cart = await cartService.addProductToCart(cid, pid);
+        const user = req.user;
+        const cart = await cartService.addProductToCart(cid, pid, user);
 
         successResponse(res, "Product added to cart successfully", cart);
 

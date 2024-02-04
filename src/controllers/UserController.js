@@ -4,13 +4,13 @@ import { successResponse } from "../helpers/responseMaker.js";
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await userService.findAll();
-        successResponse(res, 'Users fetched successfully', users);
+        successResponse(res, 'Users fetched successfully', { users });
     } catch (err) {
         next(err);
     }
 }
 
-const createUser = async(req, res, next) => {
+const createUser = async (req, res, next) => {
     try {
         const user = await userService.create(req.body);
         successResponse(res, 'User created successfully', user);
@@ -50,11 +50,22 @@ const resetPassword = async (req, res, next) => {
     }
 }
 
+const updateUserRole = async (req, res, next) => {
+    try {
+        const { uid } = req.params;
+        const user = await userService.updateUserRole(uid);
+        successResponse(res, 'User updated to premium successfully', user);
+    } catch (err) {
+        next(err);
+    }
+}
+
 
 export {
     getAllUsers,
     createUser,
     getUserById,
     updateUser,
-    resetPassword
+    resetPassword,
+    updateUserRole
 }
