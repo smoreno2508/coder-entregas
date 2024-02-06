@@ -7,6 +7,9 @@ import passport from "../middleware/Passport.js";
 import cookieParser from "cookie-parser";
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUI from "swagger-ui-express";
+import swaggerConfig from "../config/SwaggerConfig.js";
 import dbConnection from "../config/Database.js";
 import { __dirname } from "../helpers/utils.js";
 import mainRouter from "../routes/index.js";
@@ -17,6 +20,8 @@ import loggerMiddleware from "../middleware/loggerMiddleware.js";
 
 const logger = buildLogger("Server");
 config();
+
+
 
 export default class Server {
     
@@ -37,6 +42,11 @@ export default class Server {
       await dbConnection();
     }
 
+    swaggerDocs(){
+        const specs = swaggerJSDoc(swaggerConfig);
+        this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
+    }
+
     middlewares(){
         this.app.use(cors({
             credentials: true,
@@ -55,6 +65,7 @@ export default class Server {
         }));
         this.app.use(passport.session());
         this.app.use(loggerMiddleware);
+        this.swaggerDocs();
     }
 
     handlebars(){
