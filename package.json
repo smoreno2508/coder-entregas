@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/app.js",
+    "test": "mocha --timeout 100000 --exit",
     "start": "nodemon src/app.js"
   },
   "keywords": [],
@@ -34,5 +35,10 @@
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1",
     "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "chai": "^5.0.3",
+    "mocha": "^10.3.0",
+    "supertest": "^6.3.4"
   }
 }

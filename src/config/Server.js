@@ -92,6 +92,10 @@ export default class Server {
         this.app.use(errorHandler);
     }
 
+    getApp(){
+        return this.app;    
+    }
+    
     start(){
         this.httpServer = this.app.listen(this.PORT, () => {
             logger.debug(`Server running on port ${this.PORT}`);

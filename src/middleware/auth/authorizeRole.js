@@ -1,9 +1,9 @@
-import { ForbidenError } from "../../errors/customErrors.js";
+import { ForbidenError, NotAuthorizedError } from "../../errors/customErrors.js";
 
 const autorizeRole = (...alowedRoles) => {
     return (req, res, next) => {
         if (!alowedRoles.includes(req.user.role)) {
-            throw new ForbidenError("No tiene permisos para realizar esta acción.");
+            throw new NotAuthorizedError("No tiene permisos para realizar esta acción.");
         }
         next();
     }

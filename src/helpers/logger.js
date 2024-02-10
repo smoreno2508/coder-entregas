@@ -1,5 +1,7 @@
 import winston, { format } from "winston";
+import { config } from "dotenv";
 
+config();
 const{ combine, timestamp, json } = format;
 
 const logLevel = process.env.LOG_LEVEL || "debug";
@@ -27,15 +29,17 @@ const logger = winston.createLogger({
     ],
 });
 
-logger.add(new winston.transports.Console({
-    level: logLevel,
-    format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.label({ label: 'Ecommerce-coder' }),
-        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-        logFormat
-    )
-}));
+if(process.env.LOG_LEVEL !== 'testing'){
+    logger.add(new winston.transports.Console({
+        level: logLevel,
+        format: winston.format.combine(
+            winston.format.colorize(),
+            winston.format.label({ label: 'Ecommerce-coder' }),
+            winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+            logFormat
+        )
+    }));
+}
 
 export const buildLogger = (service) => {
     return{

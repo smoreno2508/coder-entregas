@@ -1,8 +1,13 @@
-import { ConflictError, InternalServerError, NotFoundError, NotAuthorizedError} from "../errors/customErrors.js";
+import mongoose from "mongoose";
+import { ConflictError, InternalServerError, NotFoundError, NotAuthorizedError, BadRequestError } from "../errors/customErrors.js";
 export default class ProductService {
 
     constructor(productRepository) {
         this.productRepository = productRepository;
+    }
+
+    async validateObjectId(id) {
+        if (!mongoose.Types.ObjectId.isValid(id)) throw new BadRequestError('Invalid id');
     }
 
     async productExists(code) {
@@ -52,6 +57,8 @@ export default class ProductService {
     }
 
     async getProductById(id) {
+
+        await this.validateObjectId(id);
         const product = await this.productRepository.findById(id);
         if (!product) {
             throw new NotFoundError("Product not found.");
@@ -60,6 +67,7 @@ export default class ProductService {
     }
 
     async updateProduct(id, product) {
+        await this.validateObjectId(id);
         const productUpdate = await this.productRepository.update(id, product);
         if (!productUpdate) {
             throw new NotFoundError("Product not found.");
@@ -69,6 +77,7 @@ export default class ProductService {
 
     async deleteProduct(id, user) {
 
+        await this.validateObjectId(id);
         const product = await this.getProductById(id);
 
         if (user.role !== 'ADMIN' && product.owner !== user.email) {
