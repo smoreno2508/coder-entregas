@@ -13,6 +13,16 @@
 				{
 					"name": "Add Product",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzdiMDkxZmZiNzY4ZjNhZTNiZjE5OSIsImVtYWlsIjoiYWRtaW5AcHJ1ZWJhLmNsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzA3NTkyNTY3Njk4LCJleHAiOjE3MDc1OTI1NzEyOTh9.Gj3D4PV97ChULsRqmRoSezH3cYni1ZVfM1eIQF3QvmM",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -24,15 +34,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Iphone 15 pro max\",\n    \"status\":true,\n    \"category\":\"Smartphone\",\n    \"description\": \"Iphone\",\n    \"price\": 2200,\n    \"thumbnail\": \"sin imagen\",\n    \"code\": \"APPL15\",\n    \"stock\": 50\n}"
+							"raw": "{\n    \"title\": \"El hombre mariposa 3\",\n    \"status\":true,\n    \"category\":\"Drama\",\n    \"description\": \"muy triste\",\n    \"price\": 2200,\n    \"thumbnail\": \"https://dummyimage.com/200/000/fff\",\n    \"code\": \"082257899-23\",\n    \"stock\": 50\n}"
 						},
 						"url": {
-							"raw": "{{URL}}/products",
+							"raw": "{{URL}}/product",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"products"
+								"product"
 							]
 						}
 					},
@@ -41,6 +51,16 @@
 				{
 					"name": "Update Product",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzdiMDkyZmZiNzY4ZjNhZTNiZjFhMiIsImVtYWlsIjoicmVndWxhckBwcnVlYmEuY2wiLCJyb2xlIjoiQ0xJRU5UIiwiaWF0IjoxNzA3NTk0MzE4MTM1LCJleHAiOjE3MDc1OTQzMjE3MzV9.FpdRfgw0iM9vYpgaPQm_tza3nVULS2p5uxRuwW8YvTc",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [
 							{
@@ -52,16 +72,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"stock\": 100\n}"
+							"raw": "{\n    \"stock\": 10\n}"
 						},
 						"url": {
-							"raw": "{{URL}}/products/653ef451975f05104e024b83",
+							"raw": "{{URL}}/product/65430c266f9f78cf35c3bafb",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"products",
-								"653ef451975f05104e024b83"
+								"product",
+								"65430c266f9f78cf35c3bafb"
 							]
 						}
 					},
@@ -70,16 +90,26 @@
 				{
 					"name": "Delete Product",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzdiMDkyZmZiNzY4ZjNhZTNiZjFhMiIsImVtYWlsIjoicmVndWxhckBwcnVlYmEuY2wiLCJyb2xlIjoiQ0xJRU5UIiwiaWF0IjoxNzA3NTk0MzE4MTM1LCJleHAiOjE3MDc1OTQzMjE3MzV9.FpdRfgw0iM9vYpgaPQm_tza3nVULS2p5uxRuwW8YvTc",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/products/6535da9d663aab32db7ecde3",
+							"raw": "{{URL}}/product/65430c266f9f78cf35c3baf3",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"products",
-								"6535da9d663aab32db7ecde3"
+								"product",
+								"65430c266f9f78cf35c3baf3"
 							]
 						}
 					},
@@ -91,26 +121,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/products?page=1&limit=20&sort=asc",
+							"raw": "{{URL}}/product",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"products"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "asc"
-								}
+								"product"
 							]
 						}
 					},
@@ -122,17 +138,21 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/products?limit=12&sort=desc&status=false",
+							"raw": "{{URL}}/product?limit=12&page=4&sort=desc&status=false",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"products"
+								"product"
 							],
 							"query": [
 								{
 									"key": "limit",
 									"value": "12"
+								},
+								{
+									"key": "page",
+									"value": "4"
 								},
 								{
 									"key": "sort",
@@ -153,13 +173,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/products/653ef451975f05104e024b83",
+							"raw": "{{URL}}/product/65430c266f9f78cf35c3baf3",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"products",
-								"653ef451975f05104e024b83"
+								"product",
+								"65430c266f9f78cf35c3baf3"
 							]
 						}
 					},
@@ -211,15 +231,15 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/carts/653ef46d65f9287b17b2ce43/products/653ef451975f05104e024b83",
+							"raw": "{{URL}}/cart/658366506b6de75ea6adf6f1/product/65430c266f9f78cf35c3baf6",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"carts",
-								"653ef46d65f9287b17b2ce43",
-								"products",
-								"653ef451975f05104e024b83"
+								"cart",
+								"658366506b6de75ea6adf6f1",
+								"product",
+								"65430c266f9f78cf35c3baf6"
 							]
 						}
 					},
@@ -231,12 +251,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/carts",
+							"raw": "{{URL}}/cart",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"carts"
+								"cart"
 							]
 						}
 					},
@@ -248,13 +268,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/carts/654040de6cb295c4aca02772",
+							"raw": "{{URL}}/cart/658366506b6de75ea6adf6f1",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"carts",
-								"654040de6cb295c4aca02772"
+								"cart",
+								"658366506b6de75ea6adf6f1"
 							]
 						}
 					},
@@ -266,13 +286,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/carts/6537022a811edad63be6e216/clear",
+							"raw": "{{URL}}/cart/65bae87e54da2cdd20bcf80b/clear",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"carts",
-								"6537022a811edad63be6e216",
+								"cart",
+								"65bae87e54da2cdd20bcf80b",
 								"clear"
 							]
 						}
@@ -376,8 +396,28 @@
 				{
 					"name": "Purchase Cart",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/cart/658366506b6de75ea6adf6f1/purchase",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"cart",
+								"658366506b6de75ea6adf6f1",
+								"purchase"
+							]
+						}
 					},
 					"response": []
 				}
@@ -393,7 +433,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"smoreno2508@gmail.com\",\r\n    \"firstName\": \"Sergio\",\r\n    \"lastName\":\"Moreno\",\r\n    \"password\":\"123456\"\r\n\r\n}",
+							"raw": "{\r\n    \"email\": \"smoreno2508@gmail.com\",\r\n    \"firstName\": \"Sergio\",\r\n    \"lastName\":\"Moreno\",\r\n    \"password\":\"123456\",\r\n    \"role\":\"ADMIN\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -401,12 +441,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/register",
+							"raw": "{{URL}}/user",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"register"
+								"user"
 							]
 						}
 					},
@@ -442,16 +482,26 @@
 				{
 					"name": "GetUserById",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODM2NjZkNmI2ZGU3NWVhNmFkZjZmNyIsImVtYWlsIjoic2UubW9yZW5vYy5pbmZAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzA2OTk5MTQ1MTU1LCJleHAiOjE3MDY5OTkxNDg3NTV9.js1KaEVtrpHY-ZIeby2jeZtVfe2lV__rMML6BWHk7Z0",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/user/656bafd3910d0c9efb1ae7a4",
+							"raw": "{{URL}}/user/65bae87e54da2cdd20bcf80d",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"user",
-								"656bafd3910d0c9efb1ae7a4"
+								"65bae87e54da2cdd20bcf80d"
 							]
 						}
 					},
@@ -460,8 +510,27 @@
 				{
 					"name": "getAll Users",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzdiMDkxZmZiNzY4ZjNhZTNiZjE5OSIsImVtYWlsIjoiYWRtaW5AcHJ1ZWJhLmNsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzA4NDg1MDM3OTg3LCJleHAiOjE3MDg0ODUwNDE1ODd9.7L2pfDfmZlFWEivIsO1V851Ds_rOASG5IyggpaL-VwQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/user",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user"
+							]
+						}
 					},
 					"response": []
 				},
@@ -469,7 +538,22 @@
 					"name": "getUserByEmail",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/user?email=smoreno2508@gmail.com",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "smoreno2508@gmail.com"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -477,15 +561,115 @@
 					"name": "getUserByCartId",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/user/cart/658366506b6de75ea6adf6f1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"cart",
+								"658366506b6de75ea6adf6f1"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Update User",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODM2NjZkNmI2ZGU3NWVhNmFkZjZmNyIsImVtYWlsIjoic21vcmVubzI1MDhAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzAzNDQxODcxMDg4LCJleHAiOjE3MDM0NDE4NzQ2ODh9.TTFVFfVBvLwEJVOpk4ydC1uS9uDrIK9gTHPw1lK4DsU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documents\":[]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/user/65c7b092ffb768f3ae3bf1a2",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"65c7b092ffb768f3ae3bf1a2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Email Reset Password",
+					"request": {
 						"method": "GET",
 						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"newPassword\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/reset-password?token=cd64ddf241c555a5882fabd1ccdba20eb27bbf34",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"reset-password"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "cd64ddf241c555a5882fabd1ccdba20eb27bbf34"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change role",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/user/premium/65c7b092ffb768f3ae3bf1a2",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"premium",
+								"65c7b092ffb768f3ae3bf1a2"
+							]
+						}
 					},
 					"response": []
 				}
@@ -497,8 +681,36 @@
 				{
 					"name": "generate Token",
 					"request": {
-						"method": "GET",
-						"header": []
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODM2NjZkNmI2ZGU3NWVhNmFkZjZmNyIsImVtYWlsIjoic21vcmVubzI1MDhAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzAzMTEwNjI2ODgxLCJleHAiOjE3MDMxMTA2MzA0ODF9.1XbmbC9gz6F4qXpv4Md3lbwTKpKhP7MQ2JKtDMQzRMo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"admin@prueba.cl\",\r\n    \"password\":\"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"login"
+							]
+						}
 					},
 					"response": []
 				},

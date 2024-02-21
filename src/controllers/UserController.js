@@ -4,7 +4,7 @@ import { successResponse } from "../helpers/responseMaker.js";
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await userService.findAll();
-        successResponse(res, 'Users fetched successfully', { users });
+        successResponse(res, 'Users fetched successfully', users );
     } catch (err) {
         next(err);
     }
@@ -60,6 +60,18 @@ const updateUserRole = async (req, res, next) => {
     }
 }
 
+const saveUserDocuments = async (req, res, next) => {
+    try{
+        const { id } = req.params;
+        const { dni, address, bank } = req.files;
+        const response = await userService.saveUserDocuments({id, dni, address, bank});
+        successResponse(res, 'Files saved successfully', { response });
+    } catch(err){
+        next(err);
+    }
+    
+}
+
 
 export {
     getAllUsers,
@@ -67,5 +79,6 @@ export {
     getUserById,
     updateUser,
     resetPassword,
-    updateUserRole
+    updateUserRole,
+    saveUserDocuments
 }

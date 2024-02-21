@@ -57,6 +57,8 @@ passport.use('local', new LocalStrategy(optionLocal, async (req, email, password
             return done(null, false, { message: 'Incorrect password or email.' });
         }
 
+        userService.updateLastConnection(user._id);
+
         return done(null, user);
     } catch (error) {
         return done(error);
@@ -85,10 +87,11 @@ passport.use(new GithubStrategy({
           password: profile.id,
           role: 'CLIENT',
           isGithub: true,
+          last_connection: Date.now()
         });
-  
         return done(null, newUser);
       }
+
       return done(null, user);
     } catch (error) {
       return done(error);

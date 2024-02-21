@@ -35,7 +35,7 @@ export default class UserService {
 
         await this.userExist(user.email);
 
-        if (user.role !== 'ADMIN' && user.role !== 'PREMIUM') {
+        if (user.role !== 'ADMIN') {
             const createdCart = await this.cartRepository.createCart();
             user.cartId = createdCart._id;
         }
@@ -49,8 +49,8 @@ export default class UserService {
         return await this.userRepository.create(user);
     }
 
-    async update(id, user) {
-        const userUpdate = await this.userRepository.update(id, user);
+    async update(id, data) {
+        const userUpdate = await this.userRepository.update(id, data);
         if (!userUpdate) throw new NotFoundError("User not found.");
         return userUpdate;
     }
@@ -95,6 +95,12 @@ export default class UserService {
 
         if (!user) throw new NotFoundError('User not found.');
 
+        const requiredDocuments = ['dni', 'address', 'bank'];
+        const documentsUploaded = user.documents.map(doc => doc.name);
+        const hasAllDocuments = requiredDocuments.every(doc => documentsUploaded.includes(doc));
+
+        if (!hasAllDocuments) throw new ConflictError('User does not have all required documents uploaded.');
+
         if (user.role === 'ADMIN') throw new ConflictError('User is an admin and cannot be updated.');
 
         const newRole = user.role === 'PREMIUM' ? 'CLIENT' : 'PREMIUM';
@@ -104,5 +110,29 @@ export default class UserService {
         return { email: user.email, newRole }
 
     }
+
+    async updateLastConnection(userId) {
+        await this.userRepository.update(userId, { last_connection: Date.now() });
+    }
+
+    async saveUserDocuments({ id, dni, address, bank }) {
+        const savedDocuments = await this.userRepository.update(id, {
+            documents: [
+                {
+                    name: "dni",
+                    reference: dni[0].path,
+                },
+                {
+                    name: "address",
+                    reference: address[0].path,
+                },
+                {
+                    name: "bank",
+                    reference: bank[0].path,
+                },
+            ],
+        });
+        return savedDocuments;
+    };
 
 }

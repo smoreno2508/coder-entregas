@@ -1,5 +1,4 @@
 import { userService, productService, cartService, ticketService } from "../services/index.js";
-import { v4 as uuidv4 } from 'uuid';
 
 const formatUserList = (users) => users.map(user => user.toObject());
 const formatTicketList = (tickets) => tickets.map(ticket => ticket.toObject());
@@ -30,6 +29,7 @@ const renderHomePage = async (req, res, next) => {
 
         const cart = await cartService.getCartById(req.user.cartId);
         const totalItemCount = cart.products.reduce((total, product) => total + product.quantity, 0);
+    
         res.render('homepage', {
             productList: productList.docs.map(doc => doc.toObject()),
             ...pagination,
@@ -128,6 +128,12 @@ const renderChat = async (req, res, next) => {
     });
 }
 
+const renderDocumentsUpload = async (req, res, next) => {
+    res.render('documents/uploads', {
+        user: req.user
+    });
+}
+
 const getCartById = async (req, res, next) => {
     try {
         const cart = await cartService.getCartById(req.params.id);
@@ -164,6 +170,7 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
     try {
+        userService.updateLastConnection(req.user.id);
         res.clearCookie('token');
         res.redirect('/login');
     } catch (err) {
@@ -193,5 +200,6 @@ export {
     login,
     logout,
     renderChat,
-    resetPasswordRender
+    resetPasswordRender,
+    renderDocumentsUpload
 }

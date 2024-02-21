@@ -7,7 +7,7 @@ import * as viewsController from "../controllers/ViewController.js";
 const router = Router();
 
 router.get('/login', redirectIfAuthenticated, viewsController.login);
-router.get('/logout', viewsController.logout);
+router.get('/logout', isAuthenticated, viewsController.logout);
 router.get("/register", async (req, res) => {
     res.render("auth/register");
 });
@@ -27,5 +27,6 @@ router.get('/cart/:id/complete', isAuthenticated, authorizeRole("CLIENT","PREMIU
 router.get('/admin/products', isAuthenticated, authorizeRole("ADMIN"), viewsController.renderProductListForAdmin);
 router.delete('/admin/products/:id', isAuthenticated, authorizeRole("ADMIN"), viewsController.deleteProductAdmin);
 router.get('/cart/:id', isAuthenticated, authorizeRole("CLIENT","PREMIUM"), viewsController.getCartById);
+router.get('/documents', isAuthenticated, viewsController.renderDocumentsUpload);
 
 export default router;

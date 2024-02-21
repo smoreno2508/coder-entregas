@@ -10,7 +10,7 @@ import emailRouter from './EmailRouter.js';
 const router = Router();
 
 router.use('/', viewsRouter);
-router.use('/', userRouter )
+router.use('/api/', userRouter )
 router.use('/api/', authRouter);
 router.use('/', cartRouter);
 router.use('/', productRouter);
