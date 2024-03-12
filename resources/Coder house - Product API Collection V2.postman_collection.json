@@ -672,6 +672,51 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "deleteInactiveUsers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzdiMDkxZmZiNzY4ZjNhZTNiZjE5OSIsImVtYWlsIjoiYWRtaW5AcHJ1ZWJhLmNsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzEwMjc5NjQ2NTc3LCJleHAiOjE3MTAyNzk2NTAxNzd9.VKjDP9QB912_DZr4znRQEZSz3GJZKKk0pKZf_fSukAc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/inactiveUsers",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"inactiveUsers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/user/65c7b091ffb768f3ae3bf199",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"65c7b091ffb768f3ae3bf199"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
