@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { ConflictError, InternalServerError, NotFoundError, NotAuthorizedError, BadRequestError } from "../errors/customErrors.js";
+import sendEmail from "./MailerService.js"
 export default class ProductService {
 
     constructor(productRepository) {
@@ -85,6 +86,20 @@ export default class ProductService {
         }
 
         const productDelete = await this.productRepository.delete(id);
+
+        if(product.owner !== 'admin'){
+            sendEmail(
+                product.owner,
+                'DeleteProduct',
+                'eliminacionProducto',
+                {
+                    idProduct:product._id,
+                    email: product.owner,
+                    nombreProducto: product.title,
+                }
+
+            );
+        }
 
         if (!productDelete) {
             throw new NotFoundError("Product not found.");

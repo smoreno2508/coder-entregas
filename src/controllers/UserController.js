@@ -1,10 +1,12 @@
 import { userService } from "../services/index.js";
 import { successResponse } from "../helpers/responseMaker.js";
+import UserResponseDTO from "../DTO/users/UserResponseDTO.js";
 
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await userService.findAll();
-        successResponse(res, 'Users fetched successfully', users );
+        const usersDTO = users.map(user => UserResponseDTO.fromModel(user));
+        successResponse(res, 'Users fetched successfully', usersDTO);
     } catch (err) {
         next(err);
     }
@@ -29,11 +31,22 @@ const updateUser = async (req, res, next) => {
     }
 }
 
+const deleteUser = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const user = await userService.delete(id);
+        successResponse(res, 'User updated successfully', user);
+    } catch (err) {
+        next(err);
+    }
+}
+
 const getUserById = async (req, res, next) => {
     try {
         const { id } = req.params;
         const user = await userService.findById(id);
-        successResponse(res, 'User fetched successfully', user);
+        const userDTO = UserResponseDTO.fromModel(user);
+        successResponse(res, 'User fetched successfully', userDTO);
     } catch (err) {
         next(err);
     }
@@ -61,15 +74,24 @@ const updateUserRole = async (req, res, next) => {
 }
 
 const saveUserDocuments = async (req, res, next) => {
-    try{
+    try {
         const { id } = req.params;
         const { dni, address, bank } = req.files;
-        const response = await userService.saveUserDocuments({id, dni, address, bank});
+        const response = await userService.saveUserDocuments({ id, dni, address, bank });
         successResponse(res, 'Files saved successfully', { response });
-    } catch(err){
+    } catch (err) {
         next(err);
     }
-    
+
+}
+
+const deleteInactiveUsers = async (req, res, next) => {
+    try {
+        const response = await userService.deleteInactiveUsers();
+        successResponse(res, 'Inactive users has been delete.', { response })
+    } catch (err) {
+        next(err);
+    }
 }
 
 
@@ -80,5 +102,7 @@ export {
     updateUser,
     resetPassword,
     updateUserRole,
-    saveUserDocuments
+    saveUserDocuments,
+    deleteUser,
+    deleteInactiveUsers
 }

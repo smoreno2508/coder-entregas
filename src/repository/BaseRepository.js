@@ -12,6 +12,7 @@ export default class BaseRepository {
     async findAll() {
         return await this.model.find();
     }
+    
 
     async findById(id) {
         return await this.model.findById(id);
@@ -25,6 +26,10 @@ export default class BaseRepository {
     async delete(id){
         validateObjectId(id);
         return await this.model.findByIdAndDelete(id);
+    }
+
+    async deleteMany(data){
+        return await this.model.deleteMany(data);
     }
 
 }

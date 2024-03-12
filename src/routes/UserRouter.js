@@ -10,6 +10,8 @@ router.get('/user', isAuthenticated, autorizeRole("ADMIN"), userController.getAl
 router.post('/user', isAuthenticated, autorizeRole("ADMIN"), userController.createUser);
 router.put('/user/:id', isAuthenticated, autorizeRole("ADMIN"), userController.updateUser);
 router.get('/user/:id', isAuthenticated, autorizeRole("ADMIN","CLIENT"),userController.getUserById);
+router.delete('/user/:id', isAuthenticated, autorizeRole("ADMIN"),userController.deleteUser);
+router.delete('/inactiveUsers', isAuthenticated, autorizeRole("ADMIN"), userController.deleteInactiveUsers);
 router.post('/auth/reset-password', userController.resetPassword);
 router.put('/user/premium/:uid', isAuthenticated, autorizeRole("ADMIN"), userController.updateUserRole);
 router.post('/user/:id/documents', isAuthenticated, upload.fields([

@@ -1,7 +1,8 @@
 import { successResponse } from "../helpers/responseMaker.js";
 import sendEmail from "../services/mailerService.js";
-import { userService } from "../services/index.js";
+import { userService, productService } from "../services/index.js";
 import { NotFoundError } from "../errors/customErrors.js";
+
 
 const sendEmailResetPassword = async (req, res, next) => {
     try {
@@ -12,6 +13,7 @@ const sendEmailResetPassword = async (req, res, next) => {
         if (!user) return next(new NotFoundError('el usuario no se encuentra registrado'));
 
         const token = await userService.requestPasswordReset(email);
+
 
         const emailSent = await sendEmail(
             email,
@@ -27,6 +29,12 @@ const sendEmailResetPassword = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
+}
+
+
+
+const sendEmailDeleteProduct = async(req,res, next) => {
+    
 }
 
 export {

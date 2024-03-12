@@ -25,6 +25,10 @@ export default class UserRepository extends BaseRepository {
         return await this.model.findOne({resetPasswordToken:token});
     }
 
+    async getInactiveUsers(data){
+        return await this.model.find(data);
+    }
+    
     async createPasswordResetToken(email) {
 
         const user = await this.model.findOne({ email });

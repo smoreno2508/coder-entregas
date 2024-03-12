@@ -22,19 +22,26 @@
                             <th scope="col">Id Cart</th>
                             <th scope="col">Role</th>
                             <th scope="col">Github Account</th>
-                            <th scope="col"></th>
+                            <th scope="col" colspan="2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {{#each userList}}
-                        <tr>
-                            <th scope="row">{{_id}}</th>
-                            <td>{{firstName}} {{lastName}}</td>
-                            <td>{{email}}</td>
-                            <td>{{cartId}}</td>
-                            <td>{{role}}</td>
-                            <td>{{isGithub}}</td>
-                            <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                        <tr id="usuario-{{_id}}">
+                            <th class="idUser" scope="row">{{_id}}</th>
+                            <td class="name">{{firstName}} {{lastName}}</td>
+                            <td class="email">{{email}}</td>
+                            <td class="cartId">{{cartId}}</td>
+                            <td class="role">{{role}}</td>
+                            <td class="isGitHub">{{isGithub}}</td>
+                             <td>
+                                <a href="#" onclick="mostrarFormularioActualizarUsuario('{{_id}}')"
+                                    class="btn btn-sm btn-primary"><span class="fa fa-edit"></span></a>
+                            </td>
+                            <td>
+                                <a href="#" onclick="eliminarUsuario('{{_id}}')" class="btn btn-sm btn-danger"><i
+                                        class="fas fa-trash"></i></a>
+                            </td>
                         </tr>
                         {{/each}}
                     </tbody>

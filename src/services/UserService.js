@@ -1,9 +1,9 @@
-import { NotFoundError, ConflictError } from "../errors/customErrors.js";
-import { buildLogger } from "../helpers/logger.js";
 import bcrypt from "bcrypt";
+import { NotFoundError, ConflictError } from "../errors/customErrors.js";
 
+import sendEmail from "./MailerService.js";
+import InactiveUserDeleteResponseDTO from "../DTO/users/InactiveUserDeleteResponseDTO.js";
 
-const logger = buildLogger("UserService");
 export default class UserService {
 
     constructor(userRepository, cartRepository) {
@@ -134,5 +134,42 @@ export default class UserService {
         });
         return savedDocuments;
     };
+
+
+    async deleteInactiveUsers() {
+
+
+        const twoDaysAgo = new Date();
+
+        twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+        const usersToDelete = await this.userRepository.getInactiveUsers({ last_connection: { $lt: twoDaysAgo } });
+
+        if (usersToDelete.length === 0) throw new NotFoundError('No inactive user found to delete.');
+
+        const emails = usersToDelete.map(user => user.email);
+        const names = usersToDelete.map(user => `${user.firstName} ${user.lastName}`)
+
+        const deleteInactiveUsers = await this.userRepository.deleteMany({ _id: { $in: usersToDelete.map(user => user._id) } }); 
+
+        if(emails.length > 0){
+            emails.map( email => {
+                sendEmail(
+                    email,
+                    'Inactive User',
+                    'eliminacionInactivos',
+                    {
+                        names: names,
+                        email: email,
+                    }
+                )
+            })
+        }
+
+        return new InactiveUserDeleteResponseDTO({
+            deleteUserQuantity: deleteInactiveUsers.deleteCount,
+            emails: emails
+        });
+    }
 
 }
