@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { ConflictError, NotFoundError, OutOfStockError } from "../errors/customErrors.js";
+import sendEmail from "./MailerService.js";
 
 
 export default class CartService {
@@ -67,11 +68,27 @@ export default class CartService {
         const dataFormated = {
             code: uuidv4(),
             purchase_datetime: new Date(),
-            ...data,
+            amount: data.amount,
+            purchaser: data.purchaser
         }
+
         const ticket = await this.ticketRepository.create(dataFormated);
 
         await this.clearCart(cartId);
+
+        sendEmail(
+            data.purchaser,
+            'Order details',
+            'completeOrder',
+            {
+                code: dataFormated.code,
+                purchase_datetime: dataFormated.purchase_datetime,
+                amount: dataFormated.amount,
+                purchaser: dataFormated.purchaser,
+                user: data.user,
+                items: data.items
+            },
+        )
 
         return ticket;
     }

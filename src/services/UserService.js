@@ -3,6 +3,7 @@ import { NotFoundError, ConflictError } from "../errors/customErrors.js";
 
 import sendEmail from "./MailerService.js";
 import InactiveUserDeleteResponseDTO from "../DTO/users/InactiveUserDeleteResponseDTO.js";
+import UserResponseDTO from "../DTO/users/UserResponseDTO.js";
 
 export default class UserService {
 
@@ -46,7 +47,9 @@ export default class UserService {
 
         user.password = hash;
 
-        return await this.userRepository.create(user);
+        const userCreated = await this.userRepository.create(user);
+
+        return UserResponseDTO.fromModel(userCreated);
     }
 
     async update(id, data) {
@@ -56,7 +59,8 @@ export default class UserService {
     }
 
     async delete(id) {
-        return await this.userRepository.delete(id);
+        await this.findById(id);
+        return this.userRepository.delete(id);
     }
 
 
@@ -143,28 +147,29 @@ export default class UserService {
 
         twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
-        const usersToDelete = await this.userRepository.getInactiveUsers({ last_connection: { $lt: twoDaysAgo } });
+        const usersToDelete = await this.userRepository.getInactiveUsers({
+            last_connection: { $lt: twoDaysAgo },
+            role: { $ne: 'ADMIN' }
+        });
 
         if (usersToDelete.length === 0) throw new NotFoundError('No inactive user found to delete.');
 
         const emails = usersToDelete.map(user => user.email);
-        const names = usersToDelete.map(user => `${user.firstName} ${user.lastName}`)
+    
+        const deleteInactiveUsers = await this.userRepository.deleteMany({ _id: { $in: usersToDelete.map(user => user._id) } });
 
-        const deleteInactiveUsers = await this.userRepository.deleteMany({ _id: { $in: usersToDelete.map(user => user._id) } }); 
-
-        if(emails.length > 0){
-            emails.map( email => {
-                sendEmail(
-                    email,
-                    'Inactive User',
-                    'eliminacionInactivos',
-                    {
-                        names: names,
-                        email: email,
-                    }
-                )
-            })
-        }
+        usersToDelete.forEach(user => {
+            const fullName = `${user.firstName} ${user.lastName}`;
+            sendEmail(
+                user.email,
+                'Inactive User',
+                'eliminacionInactivos',
+                {
+                    names: fullName,
+                    email: user.email,
+                }
+            );
+        });
 
         return new InactiveUserDeleteResponseDTO({
             deleteUserQuantity: deleteInactiveUsers.deleteCount,

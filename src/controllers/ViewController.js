@@ -105,6 +105,8 @@ const orderComplete = async (req, res, next) => {
         const data = {
             amount: total,
             purchaser: req.user.email,
+            items: cart.products.map(product => product.toObject()),
+            user: req.user,
         }
 
     
